@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">BestTripApp</string>
+
+    <string name="title_activity_maps">BestTrip</string>
+    <string name="origin_autocomplete_search_hint">Set Origin</string>
+    <string name="destination_autocomplete_search_hint">Set Destination</string>
+    <string name="info_tooltip">Route information</string>
+    <string name="layer_tooltip">Change layer</string>
+    <string name="route_plan_tooltip">Create a route</string>
+
+    <string-array name="routes_types">
+        <item>Work</item>
+        <item>Tourist</item>
+        <item>Family</item>
+        <item>Romantic</item>
+    </string-array>
+</resources>
