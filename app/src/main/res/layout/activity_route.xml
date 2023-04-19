@@ -27,13 +27,23 @@
         android:textSize="24dp"
         android:textAlignment="center" />
 
+    <TextView
+        android:id="@+id/route_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/route_distance"
+        app:layout_constraintStart_toStartOf="@+id/route_distance"
+        android:text="4:35 hours"
+        android:textSize="24dp"
+        android:textAlignment="center" />
+
     <Spinner
         android:id="@+id/route_vehicle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48sp"
-        app:layout_constraintTop_toBottomOf="@+id/route_distance"
-        app:layout_constraintStart_toStartOf="@+id/route_distance"/>
+        app:layout_constraintTop_toBottomOf="@+id/route_duration"
+        app:layout_constraintStart_toStartOf="@+id/route_duration"/>
 
     <Spinner
         android:id="@+id/route_category"
@@ -55,12 +65,21 @@
         android:layout_marginTop="32dp"
         android:layout_marginRight="16dp"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintTop_toBottomOf="@id/route_button_save"
+        app:layout_constraintBottom_toBottomOf="@id/route_gas_consumption"
+        android:id="@+id/places_recycle_view"
+        android:orientation="horizontal"
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <Button
         android:id="@+id/route_button_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/route_gas_consumption"
-        app:layout_constraintStart_toStartOf="@+id/route_gas_consumption"
+        app:layout_constraintTop_toBottomOf="@+id/places_recycle_view"
+        app:layout_constraintStart_toStartOf="@+id/places_recycle_view"
         android:layout_marginLeft="64dp"
         android:layout_marginRight="64dp"
         android:layout_marginTop="32dp"

@@ -2,15 +2,21 @@ package com.fekea.besttripapp.repository
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.*
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.fekea.besttripapp.activities.RouteActivity
 import com.fekea.besttripapp.dataModel.TravelLocation
 import com.fekea.besttripapp.dataModel.TravelPlace
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
-class PlacesRepo () {
+class PlacesRepo (): ViewModel() {
+
+    private val _placesListLiveData = MutableLiveData<List<TravelPlace>>()
+    val placesListLiveData: LiveData<List<TravelPlace>> = _placesListLiveData
 
 
     companion object {
@@ -18,51 +24,53 @@ class PlacesRepo () {
         const val MAPS_API_KEY = "AIzaSyCOK0WAAutVBjR1gDyrkjJwgGUrRvZL_Jk"
     }
 
-    fun searchPlacesAround(context: Context, location: TravelLocation, category: String, keyword: String): MutableList<TravelPlace> {
-        var result: MutableList<TravelPlace> = mutableListOf()
-        var urlQuery = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
-                "?keyword=" + keyword +
-                "&location="+location.latitude.toString()+ "," + location.longitude.toString() +
-                "&radius=15000" +
-                "&type=" + category +
-                "&key="+ RouteActivity.MAPS_API_KEY
+    fun searchPlacesAround(context: Context, location: TravelLocation, category: String, keyword: String) {
 
-        Log.e(RouteActivity.TAG, urlQuery)
+        viewModelScope.launch(Dispatchers.IO) {
+            var result: MutableList<TravelPlace> = mutableListOf()
+            var urlQuery = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
+                    "?keyword=" + keyword +
+                    "&location=" + location.latitude.toString() + "," + location.longitude.toString() +
+                    "&radius=15000" +
+                    "&type=" + category +
+                    "&key=" + RouteActivity.MAPS_API_KEY
 
-
-        val directionsRequest = object : StringRequest(Method.GET, urlQuery, Response.Listener<String> {
-                response ->
-            val jsonResponse = JSONObject(response)
-            val places = jsonResponse.getJSONArray("results")
-
-            for (c in 0 until places.length()) {
-                var newPlace = TravelPlace()
-                val actual = places.getJSONObject(c)
-                val placeLocation = actual.getJSONObject("geometry").getJSONObject("location")
-                val photos = actual.getJSONArray("photos")
-
-                Log.e(RouteActivity.TAG, "PLACE: $actual")
-
-                newPlace.id = actual.getString("place_id")
-                newPlace.name = actual.getString("name")
+            Log.e(RouteActivity.TAG, urlQuery)
 
 
-                newPlace.location.name = actual.getString("name")
-                newPlace.location.latitude = placeLocation.getDouble("lat")
-                newPlace.location.longitude = placeLocation.getDouble("lng")
-                newPlace.image = photos.getJSONObject(0).getString("photo_reference")
+            val directionsRequest =
+                object : StringRequest(Method.GET, urlQuery, Response.Listener<String> { response ->
+                    val jsonResponse = JSONObject(response)
+                    val places = jsonResponse.getJSONArray("results")
 
-                Log.e(RouteActivity.TAG, newPlace.toString())
-                result.add(newPlace)
-            }
+                    for (c in 0 until places.length()) {
+                        var newPlace = TravelPlace()
+                        val actual = places.getJSONObject(c)
+                        val placeLocation =
+                            actual.getJSONObject("geometry").getJSONObject("location")
+                        val photos = actual.getJSONArray("photos")
 
-        }, Response.ErrorListener {
-                _ ->
-        }){}
+                        Log.e(RouteActivity.TAG, "PLACE: $actual")
 
-        val requestQueue = Volley.newRequestQueue(context)
-        requestQueue.add(directionsRequest)
+                        newPlace.id = actual.getString("place_id")
+                        newPlace.name = actual.getString("name")
 
-        return result
+                        newPlace.location.name = actual.getString("name")
+                        newPlace.location.latitude = placeLocation.getDouble("lat")
+                        newPlace.location.longitude = placeLocation.getDouble("lng")
+                        newPlace.image = photos.getJSONObject(0).getString("photo_reference")
+
+                        Log.e(RouteActivity.TAG, newPlace.toString())
+                        result.add(newPlace)
+                    }
+
+                }, Response.ErrorListener { _ ->
+                }) {}
+
+            val requestQueue = Volley.newRequestQueue(context)
+            requestQueue.add(directionsRequest)
+
+            _placesListLiveData.postValue(result)
+        }
     }
 }

@@ -142,10 +142,16 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
             if (routeSelected >= 0 && routes.length() > routeSelected) {
                 val myIntent = Intent(this, RouteActivity::class.java)
                 val newRoute = TravelRoute()
+                val legs = routes.getJSONObject(routeSelected).getJSONArray("legs")
                 newRoute.startPoint = TravelLocation(name= "Toronto", latitude = origin.latitude, longitude = origin.longitude)
                 newRoute.endPoint = TravelLocation(name = destinationName ,latitude = destination.latitude, longitude = destination.longitude)
                 newRoute.name = destinationName
                 newRoute.route = routes[routeSelected].toString()
+                newRoute.distance = legs.getJSONObject(0).getJSONObject("distance").getDouble("value")
+                newRoute.duration = legs.getJSONObject(0).getJSONObject("duration").getDouble("value")
+                newRoute.distanceString = legs.getJSONObject(0).getJSONObject("distance").getString("text")
+                newRoute.durationString = legs.getJSONObject(0).getJSONObject("duration").getString("text")
+                //newRoute.distance =
                 myIntent.putExtra("search_route", newRoute)
                 startActivity(myIntent)
             }else {
@@ -218,6 +224,8 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         //val urlDirections = "https://maps.googleapis.com/maps/api/directions/json?origin=Toronto, ON" +
         //        "&destination=Mississauga, ON" +
         //        "&sensor=false&alternatives=true&units=metric&mode=driving" + "&key=${MAPS_API_KEY}"
+
+        Log.e(TAG,urlDirections)
 
         val directionsRequest = object : StringRequest(Method.GET, urlDirections, Response.Listener<String> {
                 response ->

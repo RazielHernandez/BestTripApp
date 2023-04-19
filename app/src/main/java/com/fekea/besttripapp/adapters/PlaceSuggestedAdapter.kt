@@ -29,6 +29,11 @@ class PlaceSuggestedAdapter(private val listener: PlaceInterface): RecyclerView.
         adapterItems.clear()
     }
 
+    fun addPlace(place: TravelPlace) {
+        adapterItems.add(place)
+        notifyDataSetChanged()
+    }
+
     fun setupAdapterData(items: List<TravelPlace>) {
         adapterItems.addAll(items)
         Log.e("TAG", "items added ${items.size}")
