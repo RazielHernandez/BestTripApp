@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "routes")
 data class RouteEntity(
-    @PrimaryKey (autoGenerate = true) val id: Int = 1,
+    @PrimaryKey(autoGenerate = true) var id: Int? = null,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "userId") val userId: String,
     @ColumnInfo(name = "startPoint") val startPoint: LocationEntity,

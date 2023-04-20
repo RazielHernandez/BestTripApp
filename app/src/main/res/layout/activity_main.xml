@@ -6,13 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/home_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxWidth="300dp"
+            android:maxHeight="300dp"
+            android:src="@drawable/besttripapp"
+            android:adjustViewBounds="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BestTrip App"
+            android:textSize="34dp"
+            android:textAlignment="center"/>
+
+
+        <Button
+            android:id="@+id/home_button_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Plan a trip"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"/>
+
+        <Button
+            android:id="@+id/home_button_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My Trips"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"/>
+
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

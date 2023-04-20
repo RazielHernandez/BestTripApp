@@ -1,0 +1,68 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="12dp"
+    android:elevation="16dp"
+    android:layout_margin="16dp"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+
+    <LinearLayout
+        android:id="@+id/card_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded_card"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/card_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/card_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Travel name"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:lines="2"/>
+
+            <TextView
+                android:id="@+id/card_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Travel category"
+                android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/card_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Travel date"
+                android:textSize="18dp"/>
+
+            <Button
+                android:id="@+id/card_button_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Details"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="end"/>
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

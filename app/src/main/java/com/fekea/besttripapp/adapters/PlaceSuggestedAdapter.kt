@@ -30,6 +30,11 @@ class PlaceSuggestedAdapter(private val context: Context, private val listener: 
         adapterItems.clear()
     }
 
+    fun removeData(place: TravelPlace) {
+        adapterItems.remove(place)
+        notifyDataSetChanged()
+    }
+
     fun addPlace(place: TravelPlace) {
         adapterItems.add(place)
         notifyDataSetChanged()

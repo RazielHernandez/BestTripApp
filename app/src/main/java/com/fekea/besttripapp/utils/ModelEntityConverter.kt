@@ -7,7 +7,6 @@ object ModelEntityConverter {
 
     fun fromRouteModelToRouteEntity(route: TravelRoute): RouteEntity {
         return RouteEntity(
-            id = 1,
             name = route.name,
             userId = route.userId,
             startPoint = fromLocationModelToLocationEntity(route.startPoint),

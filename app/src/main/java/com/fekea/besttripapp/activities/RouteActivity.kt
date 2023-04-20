@@ -22,6 +22,7 @@ import com.fekea.besttripapp.dataModel.TravelRoute
 import com.fekea.besttripapp.databinding.ActivityRouteBinding
 import com.fekea.besttripapp.databinding.ActivitySaveBinding
 import com.fekea.besttripapp.interfaces.PlaceInterface
+import com.fekea.besttripapp.viewModel.RouteViewModel
 import org.json.JSONObject
 import java.nio.channels.Selector
 import java.text.DecimalFormat
@@ -37,6 +38,7 @@ class RouteActivity: AppCompatActivity(), PlaceInterface, OnItemSelectedListener
     private lateinit var placesAdapter: PlaceSuggestedAdapter
     private lateinit var route: TravelRoute
     private lateinit var category: String
+    private lateinit var routeModel: RouteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +46,10 @@ class RouteActivity: AppCompatActivity(), PlaceInterface, OnItemSelectedListener
         setContentView(binding.root)
 
         route = intent.extras?.getSerializable("search_route") as TravelRoute
-        Log.e(SaveActivity.TAG, "Route from ${route.startPoint.name} to ${route.endPoint.name}")
-        Log.e(SaveActivity.TAG, "Route: ${route.route}")
+        //Log.e(SaveActivity.TAG, "Route from ${route.startPoint.name} to ${route.endPoint.name}")
+        //Log.e(SaveActivity.TAG, "Route: ${route.route}")
+
+        routeModel = RouteViewModel(this)
 
         placesAdapter = PlaceSuggestedAdapter(this, this)
         val recycleView = findViewById<RecyclerView>(R.id.places_recycle_view)
@@ -146,6 +150,8 @@ class RouteActivity: AppCompatActivity(), PlaceInterface, OnItemSelectedListener
     override fun onPlaceSelect(place: TravelPlace) {
         if (!route.listOfPlaces.contains(place)) {
             route.listOfPlaces.add(place)
+            placesAdapter.removeData(place)
+            routeModel.insertRouteToDB(route)
         }
     }
 

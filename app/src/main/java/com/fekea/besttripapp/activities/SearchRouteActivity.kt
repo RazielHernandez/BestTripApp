@@ -218,7 +218,7 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
 
         val urlDirections = "https://maps.googleapis.com/maps/api/directions/json?origin="+ origin.latitude.toString() + "," + origin.longitude.toString() +
                 "&destination=" + destination.latitude.toString() + "," + destination.longitude.toString() +
-                "&sensor=false&avoidTolls=true&alternatives=true&units=metric&mode=driving" + "&key=${MAPS_API_KEY}"
+                "&sensor=false&alternatives=true&units=metric&mode=driving" + "&key=${MAPS_API_KEY}"
 
         //Test
         //val urlDirections = "https://maps.googleapis.com/maps/api/directions/json?origin=Toronto, ON" +
