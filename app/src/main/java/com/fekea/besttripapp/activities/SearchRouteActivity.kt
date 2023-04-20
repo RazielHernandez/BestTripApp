@@ -140,7 +140,7 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         chooseText = findViewById(R.id.choose_text)
         chooseText.setOnClickListener {
             if (routeSelected >= 0 && routes.length() > routeSelected) {
-                val myIntent = Intent(this, SaveActivity::class.java)
+
                 val newRoute = TravelRoute()
                 val legs = routes.getJSONObject(routeSelected).getJSONArray("legs")
                 newRoute.startPoint = TravelLocation(name= "Toronto", latitude = origin.latitude, longitude = origin.longitude)
@@ -151,7 +151,8 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
                 newRoute.duration = legs.getJSONObject(0).getJSONObject("duration").getDouble("value")
                 newRoute.distanceString = legs.getJSONObject(0).getJSONObject("distance").getString("text")
                 newRoute.durationString = legs.getJSONObject(0).getJSONObject("duration").getString("text")
-                //newRoute.distance =
+
+                val myIntent = Intent(this, SaveActivity::class.java)
                 myIntent.putExtra("search_route", newRoute)
                 startActivity(myIntent)
             }else {

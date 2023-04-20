@@ -3,9 +3,12 @@ package com.fekea.besttripapp.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.fekea.besttripapp.MainActivity
 import com.fekea.besttripapp.R
 import com.fekea.besttripapp.dataModel.TravelLocation
 import com.fekea.besttripapp.dataModel.TravelRoute
@@ -96,6 +99,36 @@ class SaveActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onNothingSelected(parent: AdapterView<*>) {
         Log.e(TAG, "Nothing selected")
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.action_bar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == R.id.item_home) {
+            val myIntent = Intent(this, MainActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        if (id == R.id.item_user) {
+            Toast.makeText(this, "Item user Clicked", Toast.LENGTH_LONG).show()
+            return true
+        }
+        if (id == R.id.item_history) {
+            val myIntent = Intent(this, HistoryActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        if (id == R.id.item_vehicles) {
+            val myIntent = Intent(this, SearchRouteActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

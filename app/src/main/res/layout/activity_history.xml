@@ -44,6 +44,4 @@
             android:background="@drawable/rounded_card_blue"/>
     </LinearLayout>
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

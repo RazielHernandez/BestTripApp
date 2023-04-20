@@ -1,12 +1,17 @@
 package com.fekea.besttripapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.snapshots.Snapshot.Companion.observe
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fekea.besttripapp.MainActivity
 import com.fekea.besttripapp.R
 import com.fekea.besttripapp.adapters.TravelHistoryAdapter
 import com.fekea.besttripapp.dataModel.TravelRoute
@@ -51,5 +56,38 @@ class HistoryActivity: AppCompatActivity(), TravelInterface {
 
     override fun onTravelPressed(travel: TravelRoute) {
         Log.e(TAG, "Click on route ${travel.name}")
+        val myIntent = Intent(this, RouteActivity::class.java)
+        myIntent.putExtra("search_route", travel)
+        startActivity(myIntent)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.action_bar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == R.id.item_home) {
+            val myIntent = Intent(this, MainActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        if (id == R.id.item_user) {
+            Toast.makeText(this, "Item user Clicked", Toast.LENGTH_LONG).show()
+            return true
+        }
+        if (id == R.id.item_history) {
+            val myIntent = Intent(this, HistoryActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        if (id == R.id.item_vehicles) {
+            val myIntent = Intent(this, SearchRouteActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

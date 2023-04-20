@@ -3,9 +3,11 @@ package com.fekea.besttripapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
+import android.widget.Toast
 import com.fekea.besttripapp.activities.HistoryActivity
-import com.fekea.besttripapp.activities.SaveActivity
 import com.fekea.besttripapp.activities.SearchRouteActivity
 
 class MainActivity : AppCompatActivity() {
@@ -31,5 +33,35 @@ class MainActivity : AppCompatActivity() {
             startActivity(myIntent)
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.action_bar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == R.id.item_home) {
+            val myIntent = Intent(this, MainActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        if (id == R.id.item_user) {
+            Toast.makeText(this, "Item user Clicked", Toast.LENGTH_LONG).show()
+            return true
+        }
+        if (id == R.id.item_history) {
+            val myIntent = Intent(this, HistoryActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        if (id == R.id.item_vehicles) {
+            val myIntent = Intent(this, SearchRouteActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
