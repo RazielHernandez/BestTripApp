@@ -5,6 +5,64 @@ import com.fekea.besttripapp.database.*
 
 object ModelEntityConverter {
 
+    fun fromRouteModelToRouteEntity(routes: List<TravelRoute>): List<RouteEntity> {
+        val list: ArrayList<RouteEntity> = arrayListOf()
+        routes.forEach {
+            list.add(
+                RouteEntity(
+                    name = it.name,
+                    userId = it.userId,
+                    startPoint = fromLocationModelToLocationEntity(it.startPoint),
+                    endPoint = fromLocationModelToLocationEntity(it.endPoint),
+                    vehicle = fromVehicleModelToVehicleEntity(it.vehicle),
+                    liters = it.liters,
+                    gasCost = it.gasCost,
+                    tollCost = it.tollCost,
+                    distance = it.distance,
+                    duration = it.duration,
+                    image = it.image,
+                    category = it.category,
+                    date = it.date,
+                    distanceString = it.distanceString,
+                    durationString = it.durationString,
+                    listOfCost = fromExtraCostModelToExtraCostEntity(it.listOfCost),
+                    route = it.route,
+                    listOfPlaces = fromPlaceModelToPlaceEntity(it.listOfPlaces),
+                )
+            )
+        }
+        return list
+    }
+
+    fun fromRouteEntityToRouteModel(routes: List<RouteEntity>): List<TravelRoute> {
+        val list: ArrayList<TravelRoute> = arrayListOf()
+        routes.forEach {
+            list.add(
+                TravelRoute(
+                    name = it.name,
+                    userId = it.userId,
+                    startPoint = fromLocationEntityToLocationModel(it.startPoint),
+                    endPoint = fromLocationEntityToLocationModel(it.endPoint),
+                    vehicle = fromVehicleEntityToVehicleModel(it.vehicle),
+                    liters = it.liters,
+                    gasCost = it.gasCost,
+                    tollCost = it.tollCost,
+                    distance = it.distance,
+                    duration = it.duration,
+                    image = it.image,
+                    category = it.category,
+                    date = it.date,
+                    distanceString = it.distanceString,
+                    durationString = it.durationString,
+                    listOfCost = fromExtraCostEntityToExtraCostModel(it.listOfCost),
+                    route = it.route,
+                    listOfPlaces = fromPlaceEntityToPlaceModel(it.listOfPlaces),
+                )
+            )
+        }
+        return list
+    }
+
     fun fromRouteModelToRouteEntity(route: TravelRoute): RouteEntity {
         return RouteEntity(
             name = route.name,
@@ -17,6 +75,9 @@ object ModelEntityConverter {
             tollCost = route.tollCost,
             distance = route.distance,
             duration = route.duration,
+            image = route.image,
+            category = route.category,
+            date = route.date,
             distanceString = route.distanceString,
             durationString = route.durationString,
             listOfCost =  fromExtraCostModelToExtraCostEntity(route.listOfCost),
@@ -38,6 +99,9 @@ object ModelEntityConverter {
             tollCost = route.tollCost,
             distance = route.distance,
             duration = route.duration,
+            image = route.image,
+            category = route.category,
+            date = route.date,
             distanceString = route.distanceString,
             durationString = route.durationString,
             listOfCost =  fromExtraCostEntityToExtraCostModel(route.listOfCost),
@@ -46,7 +110,7 @@ object ModelEntityConverter {
         )
     }
 
-    fun fromLocationModelToLocationEntity(location: TravelLocation): LocationEntity {
+    private fun fromLocationModelToLocationEntity(location: TravelLocation): LocationEntity {
         return LocationEntity(
             name = location.name,
             latitude = location.latitude,
@@ -54,7 +118,7 @@ object ModelEntityConverter {
         )
     }
 
-    fun fromLocationEntityToLocationModel(location: LocationEntity): TravelLocation {
+    private fun fromLocationEntityToLocationModel(location: LocationEntity): TravelLocation {
         return TravelLocation(
             name = location.name,
             latitude = location.latitude,
@@ -62,7 +126,7 @@ object ModelEntityConverter {
         )
     }
 
-    fun fromVehicleModelToVehicleEntity(vehicle: TravelerVehicle): VehicleEntity {
+    private fun fromVehicleModelToVehicleEntity(vehicle: TravelerVehicle): VehicleEntity {
         return VehicleEntity(
             year = vehicle.year,
             maker = vehicle.maker,
@@ -70,7 +134,7 @@ object ModelEntityConverter {
         )
     }
 
-    fun fromVehicleEntityToVehicleModel(vehicle: VehicleEntity): TravelerVehicle {
+    private fun fromVehicleEntityToVehicleModel(vehicle: VehicleEntity): TravelerVehicle {
         return TravelerVehicle(
             year = vehicle.year,
             maker = vehicle.maker,
@@ -78,7 +142,7 @@ object ModelEntityConverter {
         )
     }
 
-    fun fromExtraCostModelToExtraCostEntity(costs: List<TravelExtraCost>): List<ExtraCostEntity> {
+    private fun fromExtraCostModelToExtraCostEntity(costs: List<TravelExtraCost>): List<ExtraCostEntity> {
         val list: ArrayList<ExtraCostEntity> = arrayListOf()
         costs.forEach {
             list.add(
@@ -91,7 +155,7 @@ object ModelEntityConverter {
         return list
     }
 
-    fun fromExtraCostEntityToExtraCostModel(costs: List<ExtraCostEntity>): MutableList<TravelExtraCost> {
+    private fun fromExtraCostEntityToExtraCostModel(costs: List<ExtraCostEntity>): MutableList<TravelExtraCost> {
         val list: ArrayList<TravelExtraCost> = arrayListOf()
         costs.forEach {
             list.add(
@@ -104,7 +168,7 @@ object ModelEntityConverter {
         return list
     }
 
-    fun fromPlaceModelToPlaceEntity(costs: List<TravelPlace>): List<PlaceEntity> {
+    private fun fromPlaceModelToPlaceEntity(costs: List<TravelPlace>): List<PlaceEntity> {
         val list: ArrayList<PlaceEntity> = arrayListOf()
         costs.forEach {
             list.add(
@@ -121,7 +185,7 @@ object ModelEntityConverter {
         return list
     }
 
-    fun fromPlaceEntityToPlaceModel(costs: List<PlaceEntity>): MutableList<TravelPlace> {
+    private fun fromPlaceEntityToPlaceModel(costs: List<PlaceEntity>): MutableList<TravelPlace> {
         val list: ArrayList<TravelPlace> = arrayListOf()
         costs.forEach {
             list.add(

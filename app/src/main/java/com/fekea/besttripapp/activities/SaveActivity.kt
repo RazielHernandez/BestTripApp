@@ -3,10 +3,8 @@ package com.fekea.besttripapp.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
-import android.widget.TextView
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.fekea.besttripapp.R
 import com.fekea.besttripapp.dataModel.TravelLocation
@@ -15,8 +13,10 @@ import com.fekea.besttripapp.databinding.ActivityRouteBinding
 import com.fekea.besttripapp.databinding.ActivitySaveBinding
 import com.fekea.besttripapp.utils.FuelConsumption
 import com.fekea.besttripapp.viewModel.RouteViewModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-class SaveActivity: AppCompatActivity() {
+class SaveActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     companion object {
         const val TAG = "besttripapp.SaveActivity"
@@ -26,6 +26,7 @@ class SaveActivity: AppCompatActivity() {
     private lateinit var binding: ActivitySaveBinding
     private lateinit var route: TravelRoute
     private lateinit var routeModel: RouteViewModel
+    private lateinit var category: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,9 +73,14 @@ class SaveActivity: AppCompatActivity() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             categoriesSpinner.adapter = adapter
         }
+        categoriesSpinner.onItemSelectedListener = this
 
         val saveButton = findViewById<Button>(R.id.route_button_save)
         saveButton.setOnClickListener {
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
+            route.category = this.category
+            route.date = current.format(formatter)
             routeModel.insertRouteToDB(route)
             val myIntent = Intent(this, RouteActivity::class.java)
             myIntent.putExtra("search_route", route)
@@ -83,5 +89,13 @@ class SaveActivity: AppCompatActivity() {
 
     }
 
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        Log.e(TAG, "selected: ${parent.getItemAtPosition(pos)}")
+        category = parent.getItemAtPosition(pos).toString()
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        Log.e(TAG, "Nothing selected")
+    }
 
 }

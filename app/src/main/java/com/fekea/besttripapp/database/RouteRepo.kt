@@ -16,4 +16,11 @@ class RouteRepo(appContext: Context)  {
             database.routeDAO().upsertAll(ModelEntityConverter.fromRouteModelToRouteEntity(route))
         }
     }
+
+    suspend fun getAllRoutes(): List<TravelRoute> {
+        return withContext(Dispatchers.IO) {
+            val data = ModelEntityConverter.fromRouteEntityToRouteModel(database.routeDAO().getData())
+            data
+        }
+    }
 }

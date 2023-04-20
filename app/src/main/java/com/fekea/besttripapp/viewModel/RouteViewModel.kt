@@ -10,7 +10,6 @@ import com.fekea.besttripapp.dataModel.TravelRoute
 import com.fekea.besttripapp.database.RouteRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.FileOutputStream
 
 class RouteViewModel(private val context: Context): ViewModel() {
 
@@ -20,14 +19,22 @@ class RouteViewModel(private val context: Context): ViewModel() {
         const val TAG = "com.fekea.besttripapp.RouteViewModel"
     }
 
-    private val _routesLiveData = MutableLiveData<TravelRoute>()
-    val routesLiveData: LiveData<TravelRoute> = _routesLiveData
+    private val _routesLiveData = MutableLiveData<List<TravelRoute>>()
+    val routesLiveData: LiveData<List<TravelRoute>> = _routesLiveData
 
     fun insertRouteToDB(route: TravelRoute) {
         Log.e(TAG, "Starting insert for ${route.name}")
         viewModelScope.launch(Dispatchers.IO) {
             routeRepo.insertRouteToDatabase(route)
             Log.e(TAG, "Route Inserted with")
+        }
+    }
+
+    fun getRoutes() {
+        Log.e(TAG, "Getting all the routes")
+        viewModelScope.launch(Dispatchers.IO) {
+            val data = routeRepo.getAllRoutes()
+            _routesLiveData.postValue(data)
         }
     }
 

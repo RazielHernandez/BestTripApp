@@ -14,8 +14,6 @@ class MainActivity : AppCompatActivity() {
         const val TAG = "com.fekea.besttripapp.MainActivity"
     }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
