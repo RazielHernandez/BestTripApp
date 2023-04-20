@@ -1,13 +1,14 @@
 package com.fekea.besttripapp.activities
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Response
@@ -19,12 +20,13 @@ import com.fekea.besttripapp.dataModel.TravelLocation
 import com.fekea.besttripapp.dataModel.TravelPlace
 import com.fekea.besttripapp.dataModel.TravelRoute
 import com.fekea.besttripapp.databinding.ActivityRouteBinding
+import com.fekea.besttripapp.databinding.ActivitySaveBinding
 import com.fekea.besttripapp.interfaces.PlaceInterface
-import com.fekea.besttripapp.repository.PlacesRepo
-import com.fekea.besttripapp.utils.FuelConsumption
 import org.json.JSONObject
+import java.nio.channels.Selector
+import java.text.DecimalFormat
 
-class RouteActivity: AppCompatActivity(), PlaceInterface {
+class RouteActivity: AppCompatActivity(), PlaceInterface, OnItemSelectedListener {
 
     companion object {
         const val TAG = "besttripapp.RouteActivity"
@@ -32,22 +34,35 @@ class RouteActivity: AppCompatActivity(), PlaceInterface {
     }
 
     private lateinit var binding: ActivityRouteBinding
-    //private lateinit var placesRepo: PlacesRepo
     private lateinit var placesAdapter: PlaceSuggestedAdapter
+    private lateinit var route: TravelRoute
+    private lateinit var category: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRouteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val route = intent.extras?.getSerializable("search_route") as TravelRoute
-        Log.e(TAG, "Route from ${route.startPoint.name} to ${route.endPoint.name}")
-        Log.e(TAG, "Route: ${route.route}")
+        route = intent.extras?.getSerializable("search_route") as TravelRoute
+        Log.e(SaveActivity.TAG, "Route from ${route.startPoint.name} to ${route.endPoint.name}")
+        Log.e(SaveActivity.TAG, "Route: ${route.route}")
 
-        //placesRepo = PlacesRepo()
-        //setupLiveDataListener()
-        val reader = FuelConsumption(context1 = this, id1 = R.raw.fuelconsumptionratings)
-        val gasConsumption = reader.fuelConsumptionSearch("2023","Cadillac","XT5")
+        placesAdapter = PlaceSuggestedAdapter(this, this)
+        val recycleView = findViewById<RecyclerView>(R.id.places_recycle_view)
+        recycleView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recycleView.adapter = placesAdapter
+
+        val categoriesSpinner: Spinner = findViewById(R.id.route_place_category)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.place_categories,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            categoriesSpinner.adapter = adapter
+        }
+
+        categoriesSpinner.onItemSelectedListener = this
 
         val routeName = findViewById<TextView>(R.id.route_title)
         routeName.text = "Travel to ${route.name}"
@@ -59,53 +74,23 @@ class RouteActivity: AppCompatActivity(), PlaceInterface {
         routeDuration.text = "Duration: ${route.durationString}"
 
         val fuelConsumption = findViewById<TextView>(R.id.route_gas_consumption)
-        fuelConsumption.text = "Estimate gas: ${gasConsumption.calculateGasConsumptionString((route.distance/1000))}"
+        val formatter = DecimalFormat("#.##")
+        fuelConsumption.text = "${formatter.format(route.liters)} liters / $ ${formatter.format(route.gasCost)}"
 
-
-
-        Log.e(TAG, "GAS : ${gasConsumption.toString()}")
-
-        val categoriesSpinner = findViewById<Spinner>(R.id.route_category)
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.route_types,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            categoriesSpinner.adapter = adapter
-        }
-
-        placesAdapter = PlaceSuggestedAdapter(this)
-        val recycleView = findViewById<RecyclerView>(R.id.places_recycle_view)
-        recycleView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recycleView.adapter = placesAdapter
-
-
-        //placesRepo.searchPlacesAround(context = this, route.endPoint, "Tourist", keyword = "Hotel")
-        searchPlacesAround(route.endPoint, "Tourist", keyword = "Hotel")
-
+        category = "Restaurant"
+        searchPlacesAround(route.endPoint, category, category)
     }
-
-    /*private fun setupLiveDataListener() {
-        placesRepo.placesListLiveData.observe(this) {
-            Log.e(TAG, "${it.size} elements were recovered")
-            for (place in it) {
-                Log.e(TAG, "Place ${place.name}")
-                Log.e(TAG, "Location ${place.location}")
-                Log.e(TAG, "Image id: ${place.image}")
-            }
-        }
-    }*/
 
     fun searchPlacesAround(location: TravelLocation, category: String, keyword: String) {
 
+
         var result: MutableList<TravelPlace> = mutableListOf()
         var urlQuery = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
-                "?keyword=" + keyword +
-                "&location=" + location.latitude.toString() + "," + location.longitude.toString() +
+                //"?keyword=" + keyword +
+                "?location=" + location.latitude.toString() + "," + location.longitude.toString() +
                 "&radius=15000" +
                 "&type=" + category +
-                "&key=" + MAPS_API_KEY
+                "&key=" + SaveActivity.MAPS_API_KEY
 
         Log.e(TAG, urlQuery)
 
@@ -113,31 +98,44 @@ class RouteActivity: AppCompatActivity(), PlaceInterface {
         val directionsRequest =
             object : StringRequest(Method.GET, urlQuery, Response.Listener<String> { response ->
                 val jsonResponse = JSONObject(response)
-                val places = jsonResponse.getJSONArray("results")
-
-                for (c in 0 until places.length()) {
-                    var newPlace = TravelPlace()
-                    val actual = places.getJSONObject(c)
-                    val placeLocation =
-                        actual.getJSONObject("geometry").getJSONObject("location")
-                    val photos = actual.getJSONArray("photos")
-
-                    //Log.e(TAG, "PLACE: $actual")
-
-                    newPlace.id = actual.getString("place_id")
-                    newPlace.name = actual.getString("name")
-
-                    newPlace.location.name = actual.getString("name")
-                    newPlace.location.latitude = placeLocation.getDouble("lat")
-                    newPlace.location.longitude = placeLocation.getDouble("lng")
-                    newPlace.image = photos.getJSONObject(0).getString("photo_reference")
-
-                    Log.e(TAG, newPlace.toString())
-                    result.add(newPlace)
+                if (jsonResponse.getString("status") == "OK"){
+                    val places = jsonResponse.getJSONArray("results")
 
 
+
+                    for (c in 0 until places.length()) {
+                        var newPlace = TravelPlace()
+                        val actual = places.getJSONObject(c)
+                        val placeLocation =
+                            actual.getJSONObject("geometry").getJSONObject("location")
+                        if (actual.has("photos")){
+                            val photos = actual.getJSONArray("photos")
+                            val imageBaseURL = "https://maps.googleapis.com/maps/api/place/photo" +
+                                    "?maxwidth=400" +
+                                    "&photo_reference=" + photos.getJSONObject(0).getString("photo_reference") +
+                                    "&key="+ MAPS_API_KEY
+                            //Log.e(TAG, "IMAGE URL: $imageBaseURL")
+                            newPlace.image = imageBaseURL
+                        } else {
+                            newPlace.image = "Aap_uEA7vb0DDYVJWEaX3O-AtYp77AaswQKSGtDaimt3gt7QCNpdjp1BkdM6acJ96xTec3tsV_ZJNL_JP-lqsVxydG3nh739RE_hepOOL05tfJh2_ranjMadb3VoBYFvF0ma6S24qZ6QJUuV6sSRrhCskSBP5C1myCzsebztMfGvm7ij3gZT"
+                        }
+
+                        newPlace.id = actual.getString("place_id")
+                        newPlace.name = actual.getString("name")
+
+                        newPlace.location.name = actual.getString("name")
+                        newPlace.location.latitude = placeLocation.getDouble("lat")
+                        newPlace.location.longitude = placeLocation.getDouble("lng")
+
+                        Log.e(TAG, newPlace.toString())
+                        result.add(newPlace)
+
+                    }
+                }else {
+                    Log.e(TAG, "There aren't places with this criteria")
                 }
 
+                placesAdapter.clearAdapterData()
                 placesAdapter.setupAdapterData(result)
 
             }, Response.ErrorListener { _ ->
@@ -145,12 +143,38 @@ class RouteActivity: AppCompatActivity(), PlaceInterface {
 
         val requestQueue = Volley.newRequestQueue(this)
         requestQueue.add(directionsRequest)
-
     }
 
     override fun onPlaceSelect(place: TravelPlace) {
 
     }
 
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        if (parent != null) {
+            //category = parent.getItemAtPosition(position).toString()
+            Log.e(TAG, "selected: ${parent.getItemAtPosition(position).toString()}")
+            generateCategory(parent.getItemAtPosition(position).toString())
+            searchPlacesAround(route.endPoint, category, category)
+        }
+    }
 
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
+
+    private fun generateCategory(selected: String) {
+        when (selected) {
+            "Restaurant" -> this.category = "restaurant"
+            "Hotel" -> this.category = "hotel"
+            "Parking" -> this.category = "parking"
+            "Gas station" -> this.category = "gas_station"
+            "Bar" -> this.category = "bar"
+            "Hospital" -> this.category = "hospital"
+            "Park" -> this.category = "park"
+            "Museum" -> this.category = "museum"
+            "Spa" -> this.category = "spa"
+            "Tourist Attraction" -> this.category = "tourist_attraction"
+            else -> this.category = "tourist_attraction"
+        }
+    }
 }

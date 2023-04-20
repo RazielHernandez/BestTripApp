@@ -9,8 +9,9 @@ data class TravelRoute(
     var startPoint: TravelLocation = TravelLocation(),
     var endPoint: TravelLocation = TravelLocation(),
     var vehicle: TravelerVehicle = TravelerVehicle(),
-    var gasCost: Float = 0.0F,
-    var tollCost: Float = 0.0F,
+    var liters: Double = 0.0,
+    var gasCost: Double = 0.0,
+    var tollCost: Double = 0.0,
     var distance: Double = 0.0,
     var duration: Double = 0.0,
     var distanceString: String = "",
@@ -36,8 +37,8 @@ data class TravelRoute(
         )
     }
 
-    fun calculateTotalCost(): Float {
-        var result: Float = 0.0F
+    fun calculateTotalCost(): Double {
+        var result: Double = 0.0
         result = gasCost + tollCost
         for(extra in listOfCost){
             result += extra.cost

@@ -18,10 +18,13 @@
     <string-array name="place_categories">
         <item>Restaurant</item>
         <item>Hotel</item>
+        <item>Parking</item>
+        <item>Gas station</item>
         <item>Bar</item>
-        <item>Tourist</item>
         <item>Hospital</item>
         <item>Park</item>
         <item>Museum</item>
+        <item>Spa</item>
+        <item>Tourist Attraction</item>
     </string-array>
 </resources>

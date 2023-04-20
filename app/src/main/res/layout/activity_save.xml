@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/route_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Route title"
+        android:textSize="32dp"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/route_distance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/route_title"
+        app:layout_constraintStart_toStartOf="@+id/route_title"
+        android:text="9999 Km"
+        android:textSize="24dp"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/route_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/route_distance"
+        app:layout_constraintStart_toStartOf="@+id/route_distance"
+        android:text="4:35 hours"
+        android:textSize="24dp"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/route_label_car"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select a vehicle"
+        android:textSize="22dp"
+        app:layout_constraintTop_toBottomOf="@+id/route_duration"
+        app:layout_constraintStart_toStartOf="@+id/route_duration"/>
+
+    <Spinner
+        android:id="@+id/route_vehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48sp"
+        android:minWidth="48dp"
+        app:layout_constraintTop_toBottomOf="@+id/route_label_car"
+        app:layout_constraintStart_toStartOf="@+id/route_label_car"/>
+
+    <Button
+        android:id="@+id/route_button_add_car"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add a car"
+        android:layout_marginRight="64dp"
+        android:layout_marginLeft="64dp"
+        app:layout_constraintTop_toBottomOf="@+id/route_vehicle"
+        app:layout_constraintStart_toStartOf="@+id/route_vehicle"/>
+
+    <TextView
+        android:id="@+id/route_label_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select the reason for your trip"
+        android:textSize="22dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/route_button_add_car"
+        app:layout_constraintStart_toStartOf="@+id/route_button_add_car"/>
+
+    <Spinner
+        android:id="@+id/route_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48sp"
+        app:layout_constraintTop_toBottomOf="@+id/route_label_type"
+        app:layout_constraintStart_toStartOf="@+id/route_label_type"/>
+
+    <TextView
+        android:id="@+id/route_gas_consumption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/route_category"
+        app:layout_constraintStart_toStartOf="@+id/route_category"
+        android:text="Estimate gas consumption: $ 965.78"
+        android:textSize="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="16dp"/>
+
+    <Button
+        android:id="@+id/route_button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/route_gas_consumption"
+        app:layout_constraintStart_toStartOf="@+id/route_gas_consumption"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"
+        android:text="Save route"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

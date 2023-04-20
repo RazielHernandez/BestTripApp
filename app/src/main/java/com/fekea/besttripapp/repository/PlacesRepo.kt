@@ -6,7 +6,7 @@ import androidx.lifecycle.*
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.fekea.besttripapp.activities.RouteActivity
+import com.fekea.besttripapp.activities.SaveActivity
 import com.fekea.besttripapp.dataModel.TravelLocation
 import com.fekea.besttripapp.dataModel.TravelPlace
 import kotlinx.coroutines.Dispatchers
@@ -33,9 +33,9 @@ class PlacesRepo (): ViewModel() {
                     "&location=" + location.latitude.toString() + "," + location.longitude.toString() +
                     "&radius=15000" +
                     "&type=" + category +
-                    "&key=" + RouteActivity.MAPS_API_KEY
+                    "&key=" + SaveActivity.MAPS_API_KEY
 
-            Log.e(RouteActivity.TAG, urlQuery)
+            Log.e(SaveActivity.TAG, urlQuery)
 
 
             val directionsRequest =
@@ -50,7 +50,7 @@ class PlacesRepo (): ViewModel() {
                             actual.getJSONObject("geometry").getJSONObject("location")
                         val photos = actual.getJSONArray("photos")
 
-                        Log.e(RouteActivity.TAG, "PLACE: $actual")
+                        Log.e(SaveActivity.TAG, "PLACE: $actual")
 
                         newPlace.id = actual.getString("place_id")
                         newPlace.name = actual.getString("name")
@@ -60,7 +60,7 @@ class PlacesRepo (): ViewModel() {
                         newPlace.location.longitude = placeLocation.getDouble("lng")
                         newPlace.image = photos.getJSONObject(0).getString("photo_reference")
 
-                        Log.e(RouteActivity.TAG, newPlace.toString())
+                        Log.e(SaveActivity.TAG, newPlace.toString())
                         result.add(newPlace)
                     }
 

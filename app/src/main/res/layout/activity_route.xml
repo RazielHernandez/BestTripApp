@@ -7,83 +7,108 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
-    <TextView
-        android:id="@+id/route_title"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="Route title"
-        android:textSize="32dp"
-        android:textAlignment="center" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <TextView
-        android:id="@+id/route_distance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/route_title"
-        app:layout_constraintStart_toStartOf="@+id/route_title"
-        android:text="9999 Km"
-        android:textSize="24dp"
-        android:textAlignment="center" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/route_duration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/route_distance"
-        app:layout_constraintStart_toStartOf="@+id/route_distance"
-        android:text="4:35 hours"
-        android:textSize="24dp"
-        android:textAlignment="center" />
+            <ImageView
+                android:id="@+id/route_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-    <Spinner
-        android:id="@+id/route_vehicle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48sp"
-        app:layout_constraintTop_toBottomOf="@+id/route_duration"
-        app:layout_constraintStart_toStartOf="@+id/route_duration"/>
+            <TextView
+                android:id="@+id/route_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Route title"
+                android:textSize="32dp"
+                android:textAlignment="center" />
 
-    <Spinner
-        android:id="@+id/route_category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48sp"
-        app:layout_constraintTop_toBottomOf="@+id/route_vehicle"
-        app:layout_constraintStart_toStartOf="@+id/route_vehicle"/>
+            <TextView
+                android:id="@+id/route_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/route_title"
+                app:layout_constraintStart_toStartOf="@+id/route_title"
+                android:text="9999 Km"
+                android:textSize="24dp"
+                android:textAlignment="center" />
 
-    <TextView
-        android:id="@+id/route_gas_consumption"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/route_category"
-        app:layout_constraintStart_toStartOf="@+id/route_category"
-        android:text="Estimate gas consumption: $ 965.78"
-        android:textSize="20dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginRight="16dp"/>
+            <TextView
+                android:id="@+id/route_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/route_distance"
+                app:layout_constraintStart_toStartOf="@+id/route_distance"
+                android:text="4:35 hours"
+                android:textSize="24dp"
+                android:textAlignment="center" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        app:layout_constraintTop_toBottomOf="@id/route_button_save"
-        app:layout_constraintBottom_toBottomOf="@id/route_gas_consumption"
-        android:id="@+id/places_recycle_view"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/route_gas_consumption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/route_duration"
+                app:layout_constraintStart_toStartOf="@+id/route_duration"
+                android:text="Estimate gas consumption: $ 965.78"
+                android:textSize="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"/>
 
-    <Button
-        android:id="@+id/route_button_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/places_recycle_view"
-        app:layout_constraintStart_toStartOf="@+id/places_recycle_view"
-        android:layout_marginLeft="64dp"
-        android:layout_marginRight="64dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="16dp"
-        android:text="Save route"/>
+            <TextView
+                android:id="@+id/label_place_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/route_gas_consumption"
+                app:layout_constraintStart_toStartOf="@+id/route_gas_consumption"
+                android:text="Add places by category"
+                android:textSize="24dp"
+                android:layout_marginTop="16dp"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/route_place_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48sp"
+                app:layout_constraintTop_toBottomOf="@+id/label_place_category"
+                app:layout_constraintStart_toStartOf="@+id/label_place_category"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                app:layout_constraintTop_toBottomOf="@id/route_place_category"
+                app:layout_constraintStart_toStartOf="@id/route_place_category"
+                android:id="@+id/places_recycle_view"
+                android:orientation="horizontal"
+                android:layout_margin="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/route_button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/places_recycle_view"
+                app:layout_constraintStart_toStartOf="@+id/places_recycle_view"
+                android:layout_marginLeft="64dp"
+                android:layout_marginRight="64dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                android:text="Save route"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
