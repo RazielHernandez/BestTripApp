@@ -14,10 +14,9 @@ class PlaceSuggestedViewHolder(
     private val context: Context): RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: TravelPlace) {
-        Log.e("HOLDER", "Init card ${item.id}")
+        //Log.e("HOLDER", "Init card ${item.id}")
         binding.cardName.text = item.name
         binding.cardCategory.text = item.category
-        Log.e("TAG", item.image)
         Picasso.with(context).load(item.image).into(binding.cardImage)
 
         binding.cardButtonAdd.setOnClickListener {

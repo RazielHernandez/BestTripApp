@@ -101,8 +101,6 @@ class RouteActivity: AppCompatActivity(), PlaceInterface, OnItemSelectedListener
                 if (jsonResponse.getString("status") == "OK"){
                     val places = jsonResponse.getJSONArray("results")
 
-
-
                     for (c in 0 until places.length()) {
                         var newPlace = TravelPlace()
                         val actual = places.getJSONObject(c)
@@ -146,12 +144,13 @@ class RouteActivity: AppCompatActivity(), PlaceInterface, OnItemSelectedListener
     }
 
     override fun onPlaceSelect(place: TravelPlace) {
-
+        if (!route.listOfPlaces.contains(place)) {
+            route.listOfPlaces.add(place)
+        }
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (parent != null) {
-            //category = parent.getItemAtPosition(position).toString()
             Log.e(TAG, "selected: ${parent.getItemAtPosition(position).toString()}")
             generateCategory(parent.getItemAtPosition(position).toString())
             searchPlacesAround(route.endPoint, category, category)
@@ -159,7 +158,7 @@ class RouteActivity: AppCompatActivity(), PlaceInterface, OnItemSelectedListener
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-
+        Log.e(TAG, "Nothing in category has been selected")
     }
 
     private fun generateCategory(selected: String) {

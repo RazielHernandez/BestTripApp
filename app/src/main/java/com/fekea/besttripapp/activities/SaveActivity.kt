@@ -14,6 +14,7 @@ import com.fekea.besttripapp.dataModel.TravelRoute
 import com.fekea.besttripapp.databinding.ActivityRouteBinding
 import com.fekea.besttripapp.databinding.ActivitySaveBinding
 import com.fekea.besttripapp.utils.FuelConsumption
+import com.fekea.besttripapp.viewModel.RouteViewModel
 
 class SaveActivity: AppCompatActivity() {
 
@@ -24,6 +25,8 @@ class SaveActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivitySaveBinding
     private lateinit var route: TravelRoute
+    private lateinit var routeModel: RouteViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +36,8 @@ class SaveActivity: AppCompatActivity() {
         route = intent.extras?.getSerializable("search_route") as TravelRoute
         Log.e(TAG, "Route from ${route.startPoint.name} to ${route.endPoint.name}")
         Log.e(TAG, "Route: ${route.route}")
+
+        routeModel = RouteViewModel(this)
 
         //placesRepo = PlacesRepo()
         //setupLiveDataListener()
@@ -54,8 +59,6 @@ class SaveActivity: AppCompatActivity() {
         val liters = gasConsumption.calculateLiterConsumptionString((route.distance/1000))
         val dollars = String.format("%.2f", gasConsumption.calculateCostConsumption((route.distance/1000)))
 
-        Log.e(TAG, liters)
-        Log.e(TAG, dollars)
         fuelConsumption.text = "$liters / $ $dollars"
 
         Log.e(TAG, "GAS : ${gasConsumption.toString()}")
@@ -72,28 +75,13 @@ class SaveActivity: AppCompatActivity() {
 
         val saveButton = findViewById<Button>(R.id.route_button_save)
         saveButton.setOnClickListener {
-            Log.e(TAG, "Save")
+            routeModel.insertRouteToDB(route)
             val myIntent = Intent(this, RouteActivity::class.java)
             myIntent.putExtra("search_route", route)
             startActivity(myIntent)
         }
 
-
-        //placesRepo.searchPlacesAround(context = this, route.endPoint, "Tourist", keyword = "Hotel")
-        //searchPlacesAround(route.endPoint, "Tourist", keyword = "Hotel")
-
     }
-
-    /*private fun setupLiveDataListener() {
-        placesRepo.placesListLiveData.observe(this) {
-            Log.e(TAG, "${it.size} elements were recovered")
-            for (place in it) {
-                Log.e(TAG, "Place ${place.name}")
-                Log.e(TAG, "Location ${place.location}")
-                Log.e(TAG, "Image id: ${place.image}")
-            }
-        }
-    }*/
 
 
 }

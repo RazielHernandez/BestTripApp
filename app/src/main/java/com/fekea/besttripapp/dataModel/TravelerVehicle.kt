@@ -3,7 +3,7 @@ package com.fekea.besttripapp.dataModel
 import java.io.Serializable
 
 data class TravelerVehicle(
-    var year: Int? = 1900,
+    var year: Int = 1900,
     var maker: String = "Unknown",
     var model: String = "Unknown"
 ): Serializable {
