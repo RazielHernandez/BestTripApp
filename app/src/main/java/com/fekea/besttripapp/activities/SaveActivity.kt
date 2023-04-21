@@ -1,7 +1,12 @@
 package com.fekea.besttripapp.activities
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -31,6 +36,11 @@ class SaveActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private lateinit var routeModel: RouteViewModel
     private lateinit var category: String
 
+    private lateinit var fuelConsumption: FuelConsumption
+    private lateinit var dialog: Dialog
+    private lateinit var vehiclesList: ArrayList<String>
+    private lateinit var vehicleSearch: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +69,11 @@ class SaveActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         route.gasCost = gasConsumption.calculateCostConsumption(route.distance/1000)
         route.liters = gasConsumption.calculateLiterConsumption(route.distance/1000)
-        val fuelConsumption = findViewById<TextView>(R.id.route_gas_consumption)
+        val fuelConsumptionText = findViewById<TextView>(R.id.route_gas_consumption)
         val liters = gasConsumption.calculateLiterConsumptionString((route.distance/1000))
         val dollars = String.format("%.2f", gasConsumption.calculateCostConsumption((route.distance/1000)))
 
-        fuelConsumption.text = "$liters / $ $dollars"
+        fuelConsumptionText.text = "$liters / $ $dollars"
 
         Log.e(TAG, "GAS : ${gasConsumption.toString()}")
 
@@ -88,6 +98,46 @@ class SaveActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
             val myIntent = Intent(this, RouteActivity::class.java)
             myIntent.putExtra("search_route", route)
             startActivity(myIntent)
+        }
+
+        fuelConsumption = FuelConsumption(context1 = this, id1 = R.raw.fuelconsumptionratings)
+        vehiclesList = fuelConsumption.getVehicles()
+
+        vehicleSearch = findViewById<TextView>(R.id.vehicle_search)
+        vehicleSearch.setOnClickListener {
+            dialog = Dialog(this)
+            dialog.setContentView(R.layout.dialog_vehicle_search)
+            dialog.getWindow()?.setLayout(750, 800)
+            dialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.show()
+
+            // Initialize and assign variable
+            val editText: EditText = dialog.findViewById(R.id.edit_text)
+            val listView: ListView = dialog.findViewById(R.id.list_view)
+            val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                vehiclesList
+            )
+
+            listView.setAdapter(adapter)
+            editText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    adapter.filter.filter(s)
+                }
+
+                override fun afterTextChanged(s: Editable) {}
+            })
+
+            listView.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id -> // when item selected from list
+                // set selected item on textView
+                vehicleSearch.text = adapter.getItem(position)
+                // Dismiss dialog
+                dialog.dismiss()
+            })
         }
 
     }

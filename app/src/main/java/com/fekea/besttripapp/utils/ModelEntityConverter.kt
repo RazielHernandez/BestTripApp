@@ -126,7 +126,7 @@ object ModelEntityConverter {
         )
     }
 
-    private fun fromVehicleModelToVehicleEntity(vehicle: TravelerVehicle): VehicleEntity {
+    fun fromVehicleModelToVehicleEntity(vehicle: TravelerVehicle): VehicleEntity {
         return VehicleEntity(
             year = vehicle.year,
             maker = vehicle.maker,
@@ -134,12 +134,26 @@ object ModelEntityConverter {
         )
     }
 
-    private fun fromVehicleEntityToVehicleModel(vehicle: VehicleEntity): TravelerVehicle {
+    fun fromVehicleEntityToVehicleModel(vehicle: VehicleEntity): TravelerVehicle {
         return TravelerVehicle(
             year = vehicle.year,
             maker = vehicle.maker,
             model = vehicle.model
         )
+    }
+
+    fun fromVehicleEntityToVehicleModel(vehicles: List<VehicleEntity>): List<TravelerVehicle> {
+        val list: ArrayList<TravelerVehicle> = arrayListOf()
+        vehicles.forEach {
+            list.add(
+                TravelerVehicle(
+                    year = it.year,
+                    maker = it.maker,
+                    model = it.model
+                )
+            )
+        }
+        return list
     }
 
     private fun fromExtraCostModelToExtraCostEntity(costs: List<TravelExtraCost>): List<ExtraCostEntity> {

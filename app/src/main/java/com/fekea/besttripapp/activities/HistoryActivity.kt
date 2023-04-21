@@ -23,7 +23,6 @@ class HistoryActivity: AppCompatActivity(), TravelInterface {
 
     companion object {
         const val TAG = "besttripapp.HistoryActivity"
-        const val MAPS_API_KEY = "AIzaSyCOK0WAAutVBjR1gDyrkjJwgGUrRvZL_Jk"
     }
 
     private lateinit var binding: ActivityHistoryBinding

@@ -16,7 +16,6 @@ class PlaceSuggestedViewHolder(
     fun bind(item: TravelPlace) {
         //Log.e("HOLDER", "Init card ${item.id}")
         binding.cardName.text = item.name
-        binding.cardCategory.text = item.category
         Picasso.with(context).load(item.image).into(binding.cardImage)
 
         binding.cardButtonAdd.setOnClickListener {

@@ -1,0 +1,50 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="12dp"
+    android:elevation="16dp"
+    android:layout_margin="16dp"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_card">
+
+        <TextView
+            android:id="@+id/card_vehicle_maker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vehicle maker"
+            android:textSize="24dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/card_vehicle_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vehicle year"
+            android:textSize="18dp"/>
+
+        <TextView
+            android:id="@+id/card_vehicle_model"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vehicle model"
+            android:textSize="18dp"/>
+
+        <Button
+            android:id="@+id/card_button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="end"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

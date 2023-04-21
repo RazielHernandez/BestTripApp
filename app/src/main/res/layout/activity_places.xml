@@ -20,7 +20,10 @@
             android:text="Travel name"
             android:textSize="32dp"
             android:textStyle="bold|italic"
-            android:layout_margin="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,16 +34,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Search a place by category:"
+                android:text="Search a place by:"
                 android:textSize="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_weight="5"/>
+                android:layout_weight="7"/>
 
             <Spinner
                 android:id="@+id/places_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="3"
                 android:layout_marginRight="16dp"/>
 
         </LinearLayout>
@@ -50,7 +53,10 @@
             app:layout_constraintStart_toStartOf="@id/route_place_category"
             android:id="@+id/places_recycler_view"
             android:orientation="horizontal"
-            android:layout_margin="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

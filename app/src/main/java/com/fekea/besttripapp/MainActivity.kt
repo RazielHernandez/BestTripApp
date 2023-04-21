@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.Toast
 import com.fekea.besttripapp.activities.HistoryActivity
 import com.fekea.besttripapp.activities.SearchRouteActivity
+import com.fekea.besttripapp.activities.VehiclesActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         if (id == R.id.item_vehicles) {
-            val myIntent = Intent(this, SearchRouteActivity::class.java)
+            val myIntent = Intent(this, VehiclesActivity::class.java)
             startActivity(myIntent)
             return true
         }

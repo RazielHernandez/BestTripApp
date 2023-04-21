@@ -25,23 +25,7 @@ data class RouteEntity(
     @ColumnInfo(name = "listOfCost") val listOfCost: List<ExtraCostEntity>,
     @ColumnInfo(name = "route") val route: String,
     @ColumnInfo(name = "listOfPlaces") val listOfPlaces: List<PlaceEntity>,
-    /*
-    @PrimaryKey (autoGenerate = true) var id: Int = 1,
-    @ColumnInfo(name = "name") var name: String = "null",
-    @ColumnInfo(name = "userId") var userId: String = "null",
-    @ColumnInfo(name = "startPoint") var startPoint: LocationEntity = LocationEntity(),
-    @ColumnInfo(name = "endPoint") var endPoint: LocationEntity = LocationEntity(),
-    @ColumnInfo(name = "vehicle") var vehicle: VehicleEntity = VehicleEntity(),
-    @ColumnInfo(name = "liters") var liters: Double = 0.0,
-    @ColumnInfo(name = "gasCost") var gasCost: Double = 0.0,
-    @ColumnInfo(name = "tollCost") var tollCost: Double = 0.0,
-    @ColumnInfo(name = "distance") var distance: Double = 0.0,
-    @ColumnInfo(name = "duration") var duration: Double = 0.0,
-    @ColumnInfo(name = "distanceString") var distanceString: String = "",
-    @ColumnInfo(name = "durationString") var durationString: String = "",
-    @ColumnInfo(name = "listOfCost") var listOfCost: MutableList<ExtraCostEntity> = mutableListOf(),
-    @ColumnInfo(name = "route") var route: String = "",
-    @ColumnInfo(name = "listOfPlaces") var listOfPlaces: MutableList<PlaceEntity> = mutableListOf(),*/
+
 )
 
 data class LocationEntity(
@@ -51,7 +35,7 @@ data class LocationEntity(
 )
 
 data class VehicleEntity(
-    val year: Int,
+    val year: String,
     val maker: String,
     val model: String,
 )

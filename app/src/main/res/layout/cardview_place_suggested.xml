@@ -5,9 +5,9 @@
     app:cardCornerRadius="12dp"
     android:elevation="16dp"
     android:layout_margin="16dp"
-    android:background="@color/black"
+    android:background="@drawable/rounded_card_blue"
     android:layout_width="170dp"
-    android:layout_height="220dp">
+    android:layout_height="200dp">
 
     <LinearLayout
         android:id="@+id/card_content"
@@ -28,12 +28,6 @@
             android:layout_height="wrap_content"
             android:text="Place name"
             android:lines="2"/>
-
-        <TextView
-            android:id="@+id/card_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Place category" />
 
         <Button
             android:id="@+id/card_button_add"

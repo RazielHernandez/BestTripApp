@@ -25,7 +25,9 @@ import com.fekea.besttripapp.adapters.PlaceSuggestedAdapter
 import com.fekea.besttripapp.dataModel.TravelLocation
 import com.fekea.besttripapp.dataModel.TravelPlace
 import com.fekea.besttripapp.interfaces.PlaceInterface
+import com.fekea.besttripapp.viewModel.RouteViewModel
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MarkerOptions
 import org.json.JSONObject
 
@@ -42,6 +44,7 @@ class PlacesActivity: AppCompatActivity(), PlaceInterface, OnMapReadyCallback, O
     private lateinit var category: String
     private lateinit var placesAdapter: PlaceSuggestedAdapter
     private lateinit var placesArray: ArrayList<TravelPlace>
+    private lateinit var routeModel: RouteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +52,8 @@ class PlacesActivity: AppCompatActivity(), PlaceInterface, OnMapReadyCallback, O
         setContentView(binding.root)
 
         route = intent.extras?.getSerializable("route") as TravelRoute
+
+        routeModel = RouteViewModel(this)
 
         val categoriesSpinner: Spinner = findViewById(R.id.places_category)
         ArrayAdapter.createFromResource(
@@ -102,6 +107,14 @@ class PlacesActivity: AppCompatActivity(), PlaceInterface, OnMapReadyCallback, O
                     .title(place.name)
             )
         }
+
+        for (place in route.listOfPlaces) {
+            mMap.addMarker(
+                MarkerOptions()
+                    .position(LatLng(place.location.latitude, place.location.longitude))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            )
+        }
     }
 
     fun searchPlacesAround(location: TravelLocation, category: String, keyword: String) {
@@ -134,10 +147,11 @@ class PlacesActivity: AppCompatActivity(), PlaceInterface, OnMapReadyCallback, O
                                     "&key="+ RouteActivity.MAPS_API_KEY
                             //Log.e(TAG, "IMAGE URL: $imageBaseURL")
                             newPlace.image = imageBaseURL
+
                         } else {
                             newPlace.image = "Aap_uEA7vb0DDYVJWEaX3O-AtYp77AaswQKSGtDaimt3gt7QCNpdjp1BkdM6acJ96xTec3tsV_ZJNL_JP-lqsVxydG3nh739RE_hepOOL05tfJh2_ranjMadb3VoBYFvF0ma6S24qZ6QJUuV6sSRrhCskSBP5C1myCzsebztMfGvm7ij3gZT"
                         }
-
+                        newPlace.category = category
                         newPlace.id = actual.getString("place_id")
                         newPlace.name = actual.getString("name")
 
@@ -195,5 +209,10 @@ class PlacesActivity: AppCompatActivity(), PlaceInterface, OnMapReadyCallback, O
 
     override fun onPlaceSelect(place: TravelPlace) {
         Log.e(TAG, "Place ${place.name} selected")
+        if (!route.listOfPlaces.contains(place)) {
+            route.listOfPlaces.add(place)
+            placesAdapter.removeData(place)
+            routeModel.insertRouteToDB(route)
+        }
     }
 }
