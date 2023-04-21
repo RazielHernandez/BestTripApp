@@ -111,6 +111,29 @@ class FuelConsumption(context1: Context, id1: Int) {
         return result
     }
 
+    fun getConsumptionModelByString(query: String): FuelConsumptionModel {
+        var result = FuelConsumptionModel()
+        val insr = context.resources.openRawResource(id)
+        val br = InputStreamReader(insr)
+        val lines = br.readLines()
+        br.close()
+        insr.close()
+        for (line in lines){
+            val tokens = line.split(",")
+            val compareValue = "${tokens[MAKER_OPTION]} - ${tokens[YEAR_OPTION]} - ${tokens[MODEL_OPTION]}"
+
+            if (compareValue.equals(query)){
+                result.year = tokens[0]
+                result.maker = tokens[1]
+                result.model = tokens[2]
+                result.fuelOnCity = tokens[8].toFloat()
+                result.fuelOnHighway = tokens[9].toFloat()
+                result.fuelOnCombined = tokens[10].toFloat()
+            }
+        }
+        return result
+    }
+
     /**
      * fuelConsumptionSearch
      * Search into the database for teh gas consumption for a specific vehicle

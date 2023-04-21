@@ -160,7 +160,7 @@ class PlacesActivity: AppCompatActivity(), PlaceInterface, OnMapReadyCallback, O
                         newPlace.location.latitude = placeLocation.getDouble("lat")
                         newPlace.location.longitude = placeLocation.getDouble("lng")
 
-                        Log.e(RouteActivity.TAG, newPlace.toString())
+                        //Log.e(RouteActivity.TAG, newPlace.toString())
                         placesArray.add(newPlace)
 
                     }
@@ -182,7 +182,7 @@ class PlacesActivity: AppCompatActivity(), PlaceInterface, OnMapReadyCallback, O
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (parent != null) {
-            Log.e(RouteActivity.TAG, "selected: ${parent.getItemAtPosition(position).toString()}")
+            //Log.e(RouteActivity.TAG, "selected: ${parent.getItemAtPosition(position).toString()}")
             generateCategory(parent.getItemAtPosition(position).toString())
             searchPlacesAround(route.endPoint, category, category)
         }

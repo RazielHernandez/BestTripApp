@@ -40,6 +40,9 @@ class SaveActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private lateinit var dialog: Dialog
     private lateinit var vehiclesList: ArrayList<String>
     private lateinit var vehicleSearch: TextView
+    private lateinit var vehicleSelected: String
+    private lateinit var liters: String
+    private lateinit var dollars: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,11 +56,6 @@ class SaveActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         routeModel = RouteViewModel(this)
 
-        //placesRepo = PlacesRepo()
-        //setupLiveDataListener()
-        val reader = FuelConsumption(context1 = this, id1 = R.raw.fuelconsumptionratings)
-        val gasConsumption = reader.fuelConsumptionSearch("2023","Cadillac","XT5")
-
         val routeName = findViewById<TextView>(R.id.route_title)
         routeName.text = "Travel to ${route.name}"
 
@@ -66,16 +64,6 @@ class SaveActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         val routeDuration = findViewById<TextView>(R.id.route_duration)
         routeDuration.text = "Duration: ${route.durationString}"
-
-        route.gasCost = gasConsumption.calculateCostConsumption(route.distance/1000)
-        route.liters = gasConsumption.calculateLiterConsumption(route.distance/1000)
-        val fuelConsumptionText = findViewById<TextView>(R.id.route_gas_consumption)
-        val liters = gasConsumption.calculateLiterConsumptionString((route.distance/1000))
-        val dollars = String.format("%.2f", gasConsumption.calculateCostConsumption((route.distance/1000)))
-
-        fuelConsumptionText.text = "$liters / $ $dollars"
-
-        Log.e(TAG, "GAS : ${gasConsumption.toString()}")
 
         val categoriesSpinner = findViewById<Spinner>(R.id.route_category)
         ArrayAdapter.createFromResource(
@@ -95,8 +83,7 @@ class SaveActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
             route.category = this.category
             route.date = current.format(formatter)
             routeModel.insertRouteToDB(route)
-            val myIntent = Intent(this, RouteActivity::class.java)
-            myIntent.putExtra("search_route", route)
+            val myIntent = Intent(this, HistoryActivity::class.java)
             startActivity(myIntent)
         }
 
@@ -135,11 +122,27 @@ class SaveActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
             listView.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id -> // when item selected from list
                 // set selected item on textView
                 vehicleSearch.text = adapter.getItem(position)
+                vehicleSelected = adapter.getItem(position).toString()
+                calculateGasConsumption()
                 // Dismiss dialog
                 dialog.dismiss()
             })
         }
+    }
 
+    private fun calculateGasConsumption() {
+        val reader = FuelConsumption(context1 = this, id1 = R.raw.fuelconsumptionratings)
+        val gasConsumption = reader.getConsumptionModelByString(vehicleSelected)
+
+        route.gasCost = gasConsumption.calculateCostConsumption(route.distance/1000)
+        route.liters = gasConsumption.calculateLiterConsumption(route.distance/1000)
+        val fuelConsumptionText = findViewById<TextView>(R.id.route_gas_consumption)
+        val liters = gasConsumption.calculateLiterConsumptionString((route.distance/1000))
+        val dollars = String.format("%.2f", gasConsumption.calculateCostConsumption((route.distance/1000)))
+
+        fuelConsumptionText.text = "$liters / $ $dollars"
+
+        Log.e(TAG, "GAS : ${gasConsumption.toString()}")
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
