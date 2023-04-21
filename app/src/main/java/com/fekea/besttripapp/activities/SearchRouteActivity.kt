@@ -60,9 +60,11 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private lateinit var origin: LatLng
     private lateinit var destination: LatLng
+    private lateinit var originName: String
     private lateinit var destinationName: String
     private lateinit var layersButton: ImageButton
     private lateinit var infoButton: ImageButton
+    private lateinit var routeButton: ImageButton
     private lateinit var detailText: TextView
     private lateinit var closeText: TextView
     private lateinit var chooseText: TextView
@@ -111,7 +113,7 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
                 mMap.clear()
 
                 getLocation()
-                mMap.addMarker(MarkerOptions().position(origin).title("Toronto"))
+                mMap.addMarker(MarkerOptions().position(origin).title(originName))
 
                 destination= p0.latLng
                 destinationName = p0.name
@@ -140,7 +142,6 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         chooseText = findViewById(R.id.choose_text)
         chooseText.setOnClickListener {
             if (routeSelected >= 0 && routes.length() > routeSelected) {
-
                 val newRoute = TravelRoute()
                 val legs = routes.getJSONObject(routeSelected).getJSONArray("legs")
                 newRoute.startPoint = TravelLocation(name= "Toronto", latitude = origin.latitude, longitude = origin.longitude)
@@ -176,6 +177,12 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
         infoButton = findViewById(R.id.route_info_button)
         infoButton.setOnClickListener(){
             //Not implemented yet
+        }
+
+        routeButton = findViewById(R.id.route_plan_button)
+        routeButton.setOnClickListener() {
+            val myIntent = Intent(this, RoutePlanActivity::class.java)
+            startActivity(myIntent)
         }
     }
 
@@ -219,14 +226,12 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
 
         val urlDirections = "https://maps.googleapis.com/maps/api/directions/json?origin="+ origin.latitude.toString() + "," + origin.longitude.toString() +
                 "&destination=" + destination.latitude.toString() + "," + destination.longitude.toString() +
-                "&sensor=false&alternatives=true&units=metric&mode=driving" + "&key=${MAPS_API_KEY}"
+                "&sensor=false&avoidTolls=false&alternatives=true&units=metric&mode=driving" + "&key=${MAPS_API_KEY}"
 
         //Test
         //val urlDirections = "https://maps.googleapis.com/maps/api/directions/json?origin=Toronto, ON" +
         //        "&destination=Mississauga, ON" +
         //        "&sensor=false&alternatives=true&units=metric&mode=driving" + "&key=${MAPS_API_KEY}"
-
-        Log.e(TAG,urlDirections)
 
         val directionsRequest = object : StringRequest(Method.GET, urlDirections, Response.Listener<String> {
                 response ->
@@ -371,6 +376,7 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
                             geocoder.getFromLocation(location.latitude, location.longitude, 1) as List<Address>
 
                         origin = LatLng(list[0].latitude,list[0].longitude)
+                        originName = list[0].getAddressLine(0)
                     }
                 }
             } else {
@@ -380,6 +386,7 @@ class SearchRouteActivity: AppCompatActivity(), OnMapReadyCallback, GoogleMap.On
             }
         } else {
             origin = LatLng(43.684345, -79.431292) //Toronto
+            originName = "Toronto"
         }
     }
 

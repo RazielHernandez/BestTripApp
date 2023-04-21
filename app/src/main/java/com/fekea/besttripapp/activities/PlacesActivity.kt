@@ -16,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Response
@@ -74,6 +75,9 @@ class PlacesActivity: AppCompatActivity(), PlaceInterface, OnMapReadyCallback, O
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.places_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        val titleText: TextView = findViewById(R.id.places_travel_name)
+        titleText.text = "Trip to ${route.name}"
     }
 
     override fun onMapReady(gMap: GoogleMap) {

@@ -22,6 +22,7 @@ data class TravelRoute(
     var listOfCost: MutableList<TravelExtraCost> = mutableListOf(),
     var route: String = "",
     var listOfPlaces: MutableList<TravelPlace> = mutableListOf(),
+    var waypoints: ArrayList<String> = ArrayList(),
 ): Serializable {
     fun modelToHashMapOf(): HashMap<String, Any?> {
         return hashMapOf(
@@ -43,6 +44,7 @@ data class TravelRoute(
             "listOfCost" to listOfCost,
             "route" to route,
             "listOfPlaces" to listOfPlaces,
+            "waypoint" to waypoints,
         )
     }
 

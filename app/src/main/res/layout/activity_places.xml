@@ -49,8 +49,8 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            app:layout_constraintTop_toBottomOf="@id/route_place_category"
-            app:layout_constraintStart_toStartOf="@id/route_place_category"
+            app:layout_constraintTop_toBottomOf="@id/places_category"
+            app:layout_constraintStart_toStartOf="@id/places_category"
             android:id="@+id/places_recycler_view"
             android:orientation="horizontal"
             android:layout_marginLeft="16dp"

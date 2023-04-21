@@ -60,6 +60,16 @@
             android:name=".activities.VehiclesActivity"
             android:exported="true">
         </activity>
+
+        <activity
+            android:name=".activities.RoutePlanActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".activities.ShowRouteActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
