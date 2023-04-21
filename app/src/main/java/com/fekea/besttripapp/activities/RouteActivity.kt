@@ -53,8 +53,6 @@ class RouteActivity: AppCompatActivity(), PlaceInterface {
         recycleView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recycleView.adapter = placesAdapter
 
-
-
         val routeName = findViewById<TextView>(R.id.route_title)
         routeName.text = "Travel to ${route.name}"
 
@@ -70,8 +68,17 @@ class RouteActivity: AppCompatActivity(), PlaceInterface {
 
         val placesButton = findViewById<Button>(R.id.route_button_places)
         placesButton.setOnClickListener {
+            Log.e(TAG,"Sending route ${route._id} to places")
             val myIntent = Intent(this, PlacesActivity::class.java)
             myIntent.putExtra("route", route)
+            startActivity(myIntent)
+        }
+
+        val deleteButton = findViewById<Button>(R.id.route_button_delete)
+        deleteButton.setOnClickListener {
+            Log.e(TAG,"Deleting route ${route._id} to places")
+            routeModel.deleteRouteToDB(route)
+            val myIntent = Intent(this, MainActivity::class.java)
             startActivity(myIntent)
         }
 
@@ -83,10 +90,8 @@ class RouteActivity: AppCompatActivity(), PlaceInterface {
     override fun onPlaceSelect(place: TravelPlace) {
         placesAdapter.removeData(place)
         route.listOfPlaces.remove(place)
-        routeModel.insertRouteToDB(route)
+        routeModel.updateRouteToDB(route)
     }
-
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.action_bar_menu, menu)

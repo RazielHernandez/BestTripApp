@@ -30,6 +30,21 @@ class RouteViewModel(private val context: Context): ViewModel() {
         }
     }
 
+    fun updateRouteToDB(route: TravelRoute) {
+        Log.e(TAG, "Starting insert for ${route.name}")
+        viewModelScope.launch(Dispatchers.IO) {
+            routeRepo.insertRouteToDatabase(route)
+            Log.e(TAG, "Route Inserted with")
+        }
+    }
+
+    fun deleteRouteToDB(route: TravelRoute) {
+        viewModelScope.launch(Dispatchers.IO) {
+            routeRepo.deleteRouteToDatabase(route)
+            Log.e(TAG, "Route Inserted with")
+        }
+    }
+
     fun getRoutes() {
         Log.e(TAG, "Getting all the routes")
         viewModelScope.launch(Dispatchers.IO) {

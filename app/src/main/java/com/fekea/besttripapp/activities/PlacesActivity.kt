@@ -1,11 +1,12 @@
 package com.fekea.besttripapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.Debug.getLocation
 import com.fekea.besttripapp.R
@@ -16,12 +17,12 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.fekea.besttripapp.MainActivity
 import com.fekea.besttripapp.adapters.PlaceSuggestedAdapter
 import com.fekea.besttripapp.dataModel.TravelLocation
 import com.fekea.besttripapp.dataModel.TravelPlace
@@ -92,10 +93,6 @@ class PlacesActivity: AppCompatActivity(), PlaceInterface, OnMapReadyCallback, O
         mMap.uiSettings.isTiltGesturesEnabled = true
         mMap.uiSettings.isScrollGesturesEnabled = true
         mMap.uiSettings.isMyLocationButtonEnabled = true
-
-        //listeners
-        //mMap.setOnInfoWindowClickListener(this)
-        //mMap.setOnPolylineClickListener(this)
 
         getLocation()
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(route.endPoint.latitude, route.endPoint.longitude), 9.0f))
@@ -212,11 +209,41 @@ class PlacesActivity: AppCompatActivity(), PlaceInterface, OnMapReadyCallback, O
     }
 
     override fun onPlaceSelect(place: TravelPlace) {
-        Log.e(TAG, "Place ${place.name} selected")
+        Log.e(TAG, "Place ${place.name} selected: ${place.id} for user ${route._id}")
         if (!route.listOfPlaces.contains(place)) {
             route.listOfPlaces.add(place)
             placesAdapter.removeData(place)
             routeModel.insertRouteToDB(route)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.action_bar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == R.id.item_home) {
+            val myIntent = Intent(this, MainActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        if (id == R.id.item_user) {
+            Toast.makeText(this, "Item user Clicked", Toast.LENGTH_LONG).show()
+            return true
+        }
+        if (id == R.id.item_history) {
+            val myIntent = Intent(this, HistoryActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        if (id == R.id.item_vehicles) {
+            val myIntent = Intent(this, SearchRouteActivity::class.java)
+            startActivity(myIntent)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

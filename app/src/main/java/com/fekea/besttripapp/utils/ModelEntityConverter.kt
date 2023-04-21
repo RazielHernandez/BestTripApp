@@ -10,6 +10,7 @@ object ModelEntityConverter {
         routes.forEach {
             list.add(
                 RouteEntity(
+                    id = it._id,
                     name = it.name,
                     userId = it.userId,
                     startPoint = fromLocationModelToLocationEntity(it.startPoint),
@@ -39,6 +40,7 @@ object ModelEntityConverter {
         routes.forEach {
             list.add(
                 TravelRoute(
+                    _id = it.id,
                     name = it.name,
                     userId = it.userId,
                     startPoint = fromLocationEntityToLocationModel(it.startPoint),
@@ -65,6 +67,7 @@ object ModelEntityConverter {
 
     fun fromRouteModelToRouteEntity(route: TravelRoute): RouteEntity {
         return RouteEntity(
+            id = route._id,
             name = route.name,
             userId = route.userId,
             startPoint = fromLocationModelToLocationEntity(route.startPoint),
@@ -88,7 +91,7 @@ object ModelEntityConverter {
 
     fun fromRouteEntityToRouteModel(route: RouteEntity): TravelRoute {
         return TravelRoute(
-            _id = route.id.toString(),
+            _id = route.id,
             name = route.name,
             userId = route.userId,
             startPoint = fromLocationEntityToLocationModel(route.startPoint),

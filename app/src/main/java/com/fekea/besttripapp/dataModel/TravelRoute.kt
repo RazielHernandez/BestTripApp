@@ -3,7 +3,7 @@ package com.fekea.besttripapp.dataModel
 import java.io.Serializable
 
 data class TravelRoute(
-    var _id: String = "null",
+    var _id: Int? = null,
     var name: String = "null",
     var userId: String = "null",
     var startPoint: TravelLocation = TravelLocation(),
@@ -26,6 +26,7 @@ data class TravelRoute(
 ): Serializable {
     fun modelToHashMapOf(): HashMap<String, Any?> {
         return hashMapOf(
+            "id" to _id,
             "name" to name,
             "userId" to userId,
             "startPoint" to startPoint,

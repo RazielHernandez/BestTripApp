@@ -1,6 +1,7 @@
 package com.fekea.besttripapp.database
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import com.fekea.besttripapp.dataModel.TravelRoute
 import com.fekea.besttripapp.utils.ModelEntityConverter
@@ -13,7 +14,22 @@ class RouteRepo(appContext: Context)  {
 
     suspend fun insertRouteToDatabase(route: TravelRoute) {
         withContext(Dispatchers.IO) {
+            //route._id = null
+            val entity = ModelEntityConverter.fromRouteModelToRouteEntity(route)
+            Log.e("TAG", "upsert with id: ${route._id}")
+            database.routeDAO().upsertAll(entity)
+        }
+    }
+
+    suspend fun updateRouteToDatabase(route: TravelRoute) {
+        withContext(Dispatchers.IO) {
             database.routeDAO().upsertAll(ModelEntityConverter.fromRouteModelToRouteEntity(route))
+        }
+    }
+
+    suspend fun deleteRouteToDatabase(route: TravelRoute) {
+        withContext(Dispatchers.IO) {
+            database.routeDAO().deleteFromDatabase(ModelEntityConverter.fromRouteModelToRouteEntity(route))
         }
     }
 

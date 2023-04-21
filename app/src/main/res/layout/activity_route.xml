@@ -96,6 +96,18 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"
                 android:text="Places"/>
+
+            <Button
+                android:id="@+id/route_button_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/places_recycle_view"
+                app:layout_constraintStart_toStartOf="@+id/places_recycle_view"
+                android:layout_marginLeft="64dp"
+                android:layout_marginRight="64dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/red"
+                android:text="Delete"/>
         </LinearLayout>
     </ScrollView>
 
